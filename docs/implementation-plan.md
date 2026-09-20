@@ -238,8 +238,11 @@ coder_routine(coder):
         log "has taken a dongle" (twice; once for a lone coder, who then waits for stop)
         lock(coder->lock); last_start = now; count++; unlock
         log "is compiling";  smart_sleep(t_compile)
+        log "is debugging"   (before the release: no neighbour can log
+                              "is compiling" with these dongles while this
+                              coder still reads as compiling in the log)
         release(first); release(second)
-        log "is debugging";  smart_sleep(t_debug)
+        smart_sleep(t_debug)
         log "is refactoring"; smart_sleep(t_refactor)
     return NULL
 ```

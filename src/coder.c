@@ -39,7 +39,10 @@ static int	take_dongles(t_coder *coder)
 }
 
 /* Deadline is refreshed before the log line so the monitor never sees a
-** stale value for a coder that is already compiling. */
+** stale value for a coder that is already compiling. Symmetrically,
+** "is debugging" is logged before the dongles go back on the table so
+** no neighbour can log "is compiling" with them while this coder still
+** reads as compiling in the log. */
 static void	start_compiling(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->lock);
@@ -63,9 +66,9 @@ void	*coder_routine(void *arg)
 			break ;
 		start_compiling(coder);
 		smart_sleep(coder->sim, args->t_compile);
+		log_state(coder, "is debugging");
 		dongle_release(coder->first, coder);
 		dongle_release(coder->second, coder);
-		log_state(coder, "is debugging");
 		smart_sleep(coder->sim, args->t_debug);
 		log_state(coder, "is refactoring");
 		smart_sleep(coder->sim, args->t_refactor);
