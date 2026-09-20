@@ -1,0 +1,7 @@
+obj/
+codexion
+*.o
+*.d
+*.dSYM/
+codexion_tsan
+codexion_asan
