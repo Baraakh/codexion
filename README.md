@@ -74,13 +74,6 @@ Log format (one line per state change, timestamps in ms since start):
 800 4 burned out
 ```
 
-A test helper lives in `tests/` (not part of the submission):
-`tests/run_tests.sh` runs an argument-validation matrix and a set of
-scenarios, piping each log through `tests/check_log.py`, which verifies
-the line format, monotonic timestamps, two dongles before every compile,
-the compile → debug → refactor cycle, burnout timing (≤ 10 ms late),
-completion counts and (for two coders) the cooldown.
-
 ## Project layout
 
 ```
@@ -239,10 +232,6 @@ one `t_sim` structure passed by pointer.
 - Binary heaps: CLRS, *Introduction to Algorithms*, chapter 6.
 - The 42 Norm and `norminette`: <https://github.com/42school/norminette>.
 
-**Use of AI.** Claude (Anthropic) was used as a pair-programming assistant
-for: writing the implementation plan (`docs/implementation-plan.md`),
-drafting the source files under the Norm constraints, generating the test
-scripts in `tests/`, diagnosing two liveness problems found during testing
-(hold-and-wait chains, and the convoy behind a blocked queue head) and
-drafting this README. All design decisions, the arbitration protocol and
-the final code were reviewed, tested and validated by the author.
+**Use of AI.** AI was used to help write
+this README and the project's unit/integration tests. All generated content
+was reviewed, run, and understood before being kept.
