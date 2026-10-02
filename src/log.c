@@ -43,6 +43,26 @@ void	log_state(t_coder *coder, const char *state)
 	pthread_mutex_unlock(&sim->print_lock);
 }
 
+/* Both "has taken a dongle" lines and "is compiling" are printed under
+** a single print_lock hold, so no other coder's line can land between a
+** coder's acquisition and the compile it enables. */
+void	log_take_and_compile(t_coder *coder)
+{
+	t_sim	*sim;
+	long	ts;
+
+	sim = coder->sim;
+	pthread_mutex_lock(&sim->print_lock);
+	if (!sim->stopped)
+	{
+		ts = elapsed_ms(sim);
+		printf("%ld %d has taken a dongle\n", ts, coder->id);
+		printf("%ld %d has taken a dongle\n", ts, coder->id);
+		printf("%ld %d is compiling\n", ts, coder->id);
+	}
+	pthread_mutex_unlock(&sim->print_lock);
+}
+
 void	log_burnout(t_coder *coder)
 {
 	t_sim	*sim;

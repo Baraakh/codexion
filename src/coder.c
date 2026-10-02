@@ -26,19 +26,18 @@ static int	take_dongles(t_coder *coder)
 {
 	if (!dongle_acquire_pair(coder))
 		return (0);
-	log_state(coder, "has taken a dongle");
 	if (coder->first == coder->second)
 	{
+		log_state(coder, "has taken a dongle");
 		while (!sim_is_stopped(coder->sim))
 			usleep(SLEEP_STEP_US);
 		dongle_release(coder->first, coder);
 		return (0);
 	}
-	log_state(coder, "has taken a dongle");
 	return (1);
 }
 
-/* Deadline is refreshed before the log line so the monitor never sees a
+/* Deadline is refreshed before the log lines so the monitor never sees a
 ** stale value for a coder that is already compiling. Symmetrically,
 ** "is debugging" is logged before the dongles go back on the table so
 ** no neighbour can log "is compiling" with them while this coder still
@@ -49,7 +48,7 @@ static void	start_compiling(t_coder *coder)
 	coder->last_start = get_time_us();
 	coder->count++;
 	pthread_mutex_unlock(&coder->lock);
-	log_state(coder, "is compiling");
+	log_take_and_compile(coder);
 }
 
 void	*coder_routine(void *arg)

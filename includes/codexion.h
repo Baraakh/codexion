@@ -118,6 +118,7 @@ void		us_to_timespec(long abs_us, struct timespec *ts);
 int			sim_is_stopped(t_sim *sim);
 void		set_stopped(t_sim *sim);
 void		log_state(t_coder *coder, const char *state);
+void		log_take_and_compile(t_coder *coder);
 void		log_burnout(t_coder *coder);
 
 /* heap.c / heap_utils.c */

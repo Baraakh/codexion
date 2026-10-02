@@ -159,7 +159,9 @@ started compiling.
 both `stdout` and the `stopped` flag. The monitor prints "burned out" and
 sets `stopped` in the same critical section; every other log call checks
 the flag under the same mutex, so nothing is printed after the burnout line
-and lines never interleave.
+and lines never interleave. A coder's two "has taken a dongle" lines and
+its "is compiling" line are printed in a single `print_lock` section, so
+every "is compiling" is immediately preceded by that coder's two takes.
 
 **Lost wake-ups.** Coders wait on a per-coder *event* (mutex + condition
 variable + `notified` flag). A notification that arrives while the coder is
